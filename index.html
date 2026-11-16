@@ -38,44 +38,47 @@
 <h2>2. Data stored only on your device</h2>
 <p>The extension stores the following locally in your browser (IndexedDB and <code>chrome.storage</code>). It is not transmitted to the developer:</p>
 <ul>
-  <li>your dictionary: saved words, translations, study status, interaction history and cached translations;</li>
+  <li>your dictionary: saved words, translations, study status, interaction history and cached translations, and for each saved word the video ID, site and subtitle sentence where you saved it;</li>
   <li>settings: interface, learning and translation languages, subtitle appearance, enabled sites, time statistics;</li>
   <li>keys for optional LLM providers that you enter yourself (see section 4).</li>
 </ul>
-<p>To find subtitle files, the extension observes network requests of the pages where you enabled it. This is processed locally in your browser and is not sent to the developer.</p>
+<p>To detect subtitle files, the extension checks the addresses of network requests in your browser. It downloads and uses subtitle files only on sites where you enabled it. This happens locally and is not sent to the developer.</p>
 <p>Uninstalling the extension or clearing its data removes this local data.</p>
 
 <h2>3. Anonymous usage statistics (optional, off until you consent)</h2>
-<p>When you first use the extension, a banner on the page asks whether you want to help improve Slova. Nothing is sent to analytics before you press <strong>Allow</strong>. If you press <strong>Deny</strong> (or ignore the banner), no analytics data is sent.</p>
+<p>When you first use the extension, a banner on the page asks whether you want to help improve Slova. Nothing is sent to analytics before you press <strong>Allow</strong>. If you press <strong>Don&rsquo;t send</strong> (or ignore the banner), no analytics data is sent.</p>
 <p>If you allow it, the extension sends the following to Google Analytics 4 (Google LLC) through the Measurement Protocol:</p>
 <ul>
   <li>a random anonymous installation ID, generated only after you consent (it is not linked to your name, e-mail or Google account);</li>
-  <li>your country, which Google determines from your IP address when the request is received (the IP address itself is not available to us in reports);</li>
-  <li>interface language, learning language and translation language;</li>
-  <li>extension version and browser name;</li>
+  <li>an approximate location (country) that Google may derive from the IP address of the request; we do not receive or store IP addresses;</li>
+  <li>interface language, the language of the subtitles you watch, and your translation language;</li>
+  <li>extension version and browser name; on an update, also the previous extension version;</li>
+  <li>a session identifier (the start time of the session);</li>
   <li>the name of the video platform where subtitles were opened, chosen from a fixed list (for example YouTube, Netflix, or &ldquo;other&rdquo;), and whether subtitles loaded successfully or the failure reason;</li>
   <li>usage time and the number of days since installation.</li>
 </ul>
 <p><strong>Never sent:</strong> page or site addresses, video titles, subtitle text, the words you look up, translations, your dictionary, or any name or e-mail.</p>
-<p>Legal basis (for users in the EEA/UK): your consent (Art. 6(1)(a) GDPR). You can withdraw consent at any time: open the extension&rsquo;s Options, section &ldquo;Data&rdquo;, block &ldquo;Anonymous statistics&rdquo;, and turn it off. Withdrawing deletes the stored installation ID from your device, so later events cannot be linked to earlier ones, and no further data is sent.</p>
-<p>Google acts as a processor for this data. Google&rsquo;s own policy is available at <a href="https://policies.google.com/privacy">policies.google.com/privacy</a>. Data in Google Analytics is kept for the limited period set in the retention settings of the Google Analytics property.</p>
+<p>Legal basis (for users in the EEA/UK): your consent (Art. 6(1)(a) GDPR). You can withdraw consent at any time: open the extension&rsquo;s Options, page &ldquo;Data and synchronization&rdquo;, section &ldquo;Anonymous statistics&rdquo;, and uncheck the box. Withdrawing deletes the stored installation ID from your device, so later events cannot be linked to earlier ones, and no further data is sent.</p>
+<p>This data is received and processed by Google Analytics under Google&rsquo;s terms: <a href="https://policies.google.com/privacy">policies.google.com/privacy</a>.</p>
 
 <h2>4. Third-party services you trigger</h2>
 <ul>
-  <li><strong>Translation.</strong> When you select or hover a word or phrase for translation, that text is sent to a translation service (Google Translate) to obtain the translation. This is the core function of the extension and happens only for the text you request. Results are cached on your device.</li>
-  <li><strong>Local AI models (optional).</strong> If you enable local language models, the model files are downloaded from Hugging Face and jsDelivr and run entirely on your device.</li>
-  <li><strong>Your own LLM API key (optional).</strong> If you enter an API key of an LLM provider in Options, the text you request help with is sent to that provider under their terms. The key is stored only on your device.</li>
-  <li><strong>Phone sync (optional).</strong> If you pair the extension with the Slova mobile app, dictionary data is exchanged directly between your devices over your local network.</li>
+  <li><strong>Translation.</strong> When you open a translation for a word or phrase, that text and the language pair are sent to Google Translate (translate.googleapis.com). If you choose another engine in Options (Chrome&rsquo;s on-device translator or your own translation server URL), the text goes there instead. If the selected engine returns no result, the extension may fall back to another engine, including Google Translate. Results are cached on your device.</li>
+  <li><strong>Example sentences.</strong> If you open the Tatoeba tab in the word popup, the word and language pair are sent to Tatoeba (api.tatoeba.org).</li>
+  <li><strong>Local AI models (optional).</strong> If you enable local language models, the model files and runtime code are downloaded from Hugging Face, jsDelivr and GitHub (raw.githubusercontent.com); the models run on your device. The extension also downloads a static lemma (word base form) file from GitHub; it contains no data about you, but GitHub sees the request like any web server.</li>
+  <li><strong>Your own LLM provider (optional).</strong> If you configure an LLM provider in Options (for example OpenAI, Gemini, OpenRouter, a local Ollama/LM Studio server, or a custom URL), the selected word and the surrounding subtitle sentence are sent to that provider or URL under its terms. The API key is stored only on your device.</li>
+  <li><strong>Subtitle files.</strong> Subtitle files are requested from the video platform itself (for example YouTube) with your browser session, as your browser would when playing the video.</li>
+  <li><strong>Phone sync (optional).</strong> If you pair the extension with the Slova mobile app, dictionary data is exchanged directly between your devices over your local network (unencrypted HTTP on port 9999). No server of ours is involved. Use it only on a network you trust.</li>
 </ul>
 
 <h2>5. Uninstall feedback form</h2>
-<p>When you uninstall the extension, your browser may open an optional feedback form (Google Forms). The link contains the extension version, days since installation and browser name; if you had consented to statistics, it also contains your interface, learning and translation languages. Answering the form is voluntary and its content is visible only to the developer.</p>
+<p>When you uninstall the extension, your browser may open an optional feedback form (Google Forms). The link contains the extension version, days since installation and browser name; if you had consented to statistics, it also contains your interface, learning and translation languages. Answering the form is voluntary. The form is hosted by Google Forms: answers are available to the developer and processed by Google under its terms.</p>
 
 <h2>6. Sharing, selling and use limits</h2>
 <ul>
-  <li>We do not sell or rent data and do not transfer it to third parties, except Google as described above and the services you trigger in section 4.</li>
+  <li>We do not sell or rent data and do not transfer it to third parties, except the services described in sections 3&ndash;5.</li>
   <li>Data is used only to operate and improve the extension. It is not used for advertising, profiling, or credit assessment.</li>
-  <li>The use of information received from Google APIs will adhere to the <a href="https://developer.chrome.com/docs/webstore/program-policies/limited-use">Chrome Web Store User Data Policy</a>, including the Limited Use requirements.</li>
+  <li>The extension&rsquo;s use of data complies with the <a href="https://developer.chrome.com/docs/webstore/program-policies/limited-use">Chrome Web Store User Data Policy</a>, including the Limited Use requirements.</li>
 </ul>
 
 <h2>7. Your rights</h2>
@@ -88,7 +91,7 @@
 <p>Slova is not directed at children under 13 and we do not knowingly collect their data.</p>
 
 <h2>10. Changes</h2>
-<p>If this policy changes, the date at the top is updated. If a change expands data collection, we will ask for your consent again in the extension.</p>
+<p>If this policy changes, the date at the top is updated. If a change expands analytics collection, we will update this policy and the notice in the extension.</p>
 
 <h2>11. Contact</h2>
 <p>Questions or requests: open an issue at <a href="https://github.com/sashasobchuk/slova-legal/issues">github.com/sashasobchuk/slova-legal/issues</a>.</p>
